@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+        <title>getTravel | My Page </title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <style>
+            .center {
+                text-align: center;
+            }
+
+            .star-list {
+                width: 500px;
+                margin: 20px auto 0 auto;
+            }
+
+            .star-name {
+                display: inline-block;
+            }
+
+            .star-name:hover {
+                text-decoration: underline;
+            }
+
+            .card {
+                margin-bottom: 15px;
+            }
+            .place-pic {
+                width: 300px;
+                height: 300px;
+                object-fit: cover;
+            }
+            .media-content {
+                margin-bottom: 20px;
+            }
+
+            .edit {
+                position: relative;
+                top: 150px;
+            }
+            .post-title {
+                vertical-align: middle;
+
+
+            }
+            .mb-2 {
+                display: block;
+                margin: auto;
+            }
+            #hoogi-comment {
+                display: none;
+            }
+
+        </style>
+        <script>
+            $(document).ready(function () {
+                showPlace();
+            });
+
+            function showPlace() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/list?sample_give=샘플데이터',
+                    data: {},
+                    success: function (response) {
+                        let myplaces = response['place_likes']
+                        for (let i =0; i < myplaces.length; i++){
+                            let name = myplaces[i]['name']
+                            let img_url = myplaces[i]['img_url']
+                            let url = myplaces[i]['url']
+                            let where = myplaces[i]['where']
+                            let like = myplaces[i]['like']
+
+                            let temp_html = ' '
+                            $('#').append(temp_html)
+                        }
+                    }
+                });
+            }
+
+            function likeStar(name) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/like',
+                    data: {sample_give:'샘플데이터'},
+                    success: function (response) {
+                        alert(response['msg']);
+                    }
+                });
+            }
+
+            function deleteStar(name) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/delete',
+                    data: {sample_give:'샘플데이터'},
+                    success: function (response) {
+                        alert(response['msg']);
+                    }
+                });
+            }
+            function openclose() {
+                let status = $('#hoogi-comment').css('display');
+                if (status == 'block') {
+                    $('#hoogi-comment').hide();
+                } else {
+                    $('#hoogi-comment').show();
+                }
+
+            }
+
+
+        </script>
+    </head>
+    <body>
+    <div class="jumbotron">
+        <h1 class="display-4">Get Travel!</h1>
+        <p class="lead">해외여행을 계획하였다가 이것저것 여러 가지 난관으로 포기하셨다면... 아직 포기하기 일러요~ 바로바로 국내에 당신의 기분을 업시켜줄 장소들!</p>
+        <hr class="my-4">
+        <p class="lead">
+            <a class="btn btn-primary btn" href="#" role="button">로그인</a>
+            <a class="btn btn-primary btn" href="#" role="button">회원가입</a>
+        </p>
+    </div>
+
+        <section class="hero is-warning">
+            <div class="hero-body">
+                <div class="container center">
+                    <h1 class="title">
+                        나만의 핫 플레이스😆
+                    </h1>
+
+                </div>
+            </div>
+        </section>
+        <div class="star-list" id="star-box">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure>
+                                <img class="place-pic"
+                                        src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQi8WK72k8P4UXoGGchMrVX6e0SSqZXWfGRAQyZ8xVImu9IpHcmeWAKz_kgX_GO0C2lOO-qUESNPK2xr_K7Ttv0dQ"
+                                        alt="Placeholder image"
+                                />
+                            </figure>
+                        </div>
+                        <div class="post-title">
+                            <div class="media-content">
+                                <a href="#" target="_blank" class="star-name title is-3">N서울타워 </a>
+                                <p class="subtitle is-6">서울 용산구</p>
+                            </div>
+                            <div>
+                                <a href="#"> 여행지 소개장 </a>
+                            </div>
+                            <div>
+                                <button onclick="openclose()" type="submit" class="btn btn-primary mb-2 edit">후기쓰기</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="hoogi-comment">
+                    <div class="input-group">
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary mb-2">등록</button>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+                        좋아요!
+                        <span class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </span>
+                    </a>
+                    <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+                        삭제
+                        <span class="icon">
+              <i class="fas fa-ban"></i>
+            </span>
+                    </a>
+                </footer>
+            </div>
+        </div>
+        <div class="star-list" id="star-box">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure>
+                                <img class="place-pic"
+                                        src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQi8WK72k8P4UXoGGchMrVX6e0SSqZXWfGRAQyZ8xVImu9IpHcmeWAKz_kgX_GO0C2lOO-qUESNPK2xr_K7Ttv0dQ"
+                                        alt="Placeholder image"
+                                />
+                            </figure>
+                        </div>
+                        <div class="post-title">
+                            <div class="media-content">
+                                <a href="#" target="_blank" class="star-name title is-3">N서울타워 </a>
+                                <p class="subtitle is-6">서울 용산구</p>
+                            </div>
+                            <div>
+                                <a href="#"> 여행지 소개장 </a>
+                            </div>
+                            <div>
+                                <button onclick="openclose()" type="submit" class="btn btn-primary mb-2 edit">후기쓰기</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="hoogi-comment">
+                    <div class="input-group">
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary mb-2">등록</button>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+                        좋아요!
+                        <span class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </span>
+                    </a>
+                    <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+                        삭제
+                        <span class="icon">
+              <i class="fas fa-ban"></i>
+            </span>
+                    </a>
+                </footer>
+            </div>
+        </div>
+        <div class="star-list" id="star-box">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure>
+                                <img class="place-pic"
+                                        src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQi8WK72k8P4UXoGGchMrVX6e0SSqZXWfGRAQyZ8xVImu9IpHcmeWAKz_kgX_GO0C2lOO-qUESNPK2xr_K7Ttv0dQ"
+                                        alt="Placeholder image"
+                                />
+                            </figure>
+                        </div>
+                        <div class="post-title">
+                            <div class="media-content">
+                                <a href="#" target="_blank" class="star-name title is-3">N서울타워 </a>
+                                <p class="subtitle is-6">서울 용산구</p>
+                            </div>
+                            <div>
+                                <a href="#"> 여행지 소개장 </a>
+                            </div>
+                            <div>
+                                <button onclick="openclose()" type="submit" class="btn btn-primary mb-2 edit">후기쓰기</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="hoogi-comment">
+                    <div class="input-group">
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary mb-2">등록</button>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+                        좋아요!
+                        <span class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </span>
+                    </a>
+                    <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+                        삭제
+                        <span class="icon">
+              <i class="fas fa-ban"></i>
+            </span>
+                    </a>
+                </footer>
+            </div>
+        </div>
+        <div class="star-list" id="star-box">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure>
+                                <img class="place-pic"
+                                        src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQi8WK72k8P4UXoGGchMrVX6e0SSqZXWfGRAQyZ8xVImu9IpHcmeWAKz_kgX_GO0C2lOO-qUESNPK2xr_K7Ttv0dQ"
+                                        alt="Placeholder image"
+                                />
+                            </figure>
+                        </div>
+                        <div class="post-title">
+                            <div class="media-content">
+                                <a href="#" target="_blank" class="star-name title is-3">N서울타워 </a>
+                                <p class="subtitle is-6">서울 용산구</p>
+                            </div>
+                            <div>
+                                <a href="#"> 여행지 소개장 </a>
+                            </div>
+                            <div>
+                                <button onclick="openclose()" type="submit" class="btn btn-primary mb-2 edit">후기쓰기</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="hoogi-comment">
+                    <div class="input-group">
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary mb-2">등록</button>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+                        좋아요!
+                        <span class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </span>
+                    </a>
+                    <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+                        삭제
+                        <span class="icon">
+              <i class="fas fa-ban"></i>
+            </span>
+                    </a>
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>
