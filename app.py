@@ -159,12 +159,14 @@ def commenting():
         user_info = db.users.find_one({"username": payload["id"]})
         comment_receive = request.form["comment_give"]
         date_receive = request.form["date_give"]
+        travelname_receive = request.form["travelname_give"]
         doc = {
             "username": user_info["username"],
             "profile_name": user_info["profile_name"],
             "profile_pic_real": user_info["profile_pic_real"],
             "comment": comment_receive,
-            "date": date_receive
+            "date": date_receive,
+            "travelname": travelname_receive
         }
         db.comments.insert_one(doc)
         return jsonify({"result": "success", 'msg': '포스팅 성공'})
@@ -178,7 +180,36 @@ def get_comments():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        comments = list(db.comments.find().sort("date", -1).limit(20))
+        travelname = request.args.get("travelname_give")
+        comments = list(db.comments.find({"travelname": travelname}).sort("date", -1).limit(20))
+        for comment in comments:
+            print('코멘트 불러오기')
+            print(comment)
+            comment["_id"] = str(comment["_id"])
+        return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route('/mypage/<keyword>')
+def mypage(keyword):
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        user = db.users.find_one({"username": keyword}, {'_id': False})
+        return render_template('mypage.html', user_info=user_info, user=user)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route("/get_comments", methods=['GET'])
+def get_mycomments():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        comments = list(db.comments.find({'username': payload["id"]}).sort("date", -1).limit(20))
         for comment in comments:
             print('코멘트 불러오기')
             print(comment)
