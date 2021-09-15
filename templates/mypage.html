@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GetTravel | My Page </title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <style>
+        body {
+            background-color: RGBA(232, 52, 78, 0.2);
+            min-height: 100vh;
+        }
+
+        .section {
+            padding: 1rem 1.5rem;
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .title {
+            font-weight: 800;
+            font-size: 5rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .is-sparta {
+            color: #536dfe !important;
+        }
+
+        .button {
+            background-color: #536dfe;
+            color: #fff !important;
+        }
+
+
+        .card {
+
+            width: 250px;
+            margin: 20px;
+        }
+
+        #hoogi-comment {
+            display: ;
+        }
+
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            showLikePlace();
+        });
+
+
+        function showLikePlace() {
+            $.ajax({
+                type: 'GET',
+                url: '/mypage/like',
+                data: {},
+                success: function (response) {
+                    let myplaces = response['like_place']
+                    for (let i = 0; i < myplaces.length; i++) {
+                        let name = myplaces[i]['name']
+                        let file = myplaces[i]['file']
+                        let url = myplaces[i]['url']
+                        let address = myplaces[i]['address']
+                        let content = myplaces[i]['content']
+
+                        let temp_html = `<div class="card">
+                                            <div class="card-image">
+                                                <figure class="image is-2by2">
+                                                    <img src="${file}"
+                                                         alt="Placeholder image">
+                                                </figure>
+                                            </div>
+                                            <div class="card-content">
+                                                <div class="media">
+
+                                                    <div class="media-content">
+                                                        <p class="title is-4">${name}</p>
+                                                        <p class="subtitle is-6">${address}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="content">
+                                                    ${content}
+                                                    <div>
+                                                        <a>${url}</a>
+                                                        <a href="#">#css</a> <a href="#">#responsive</a>
+                                                        <br>
+                                                        <button onclick="openclose()" class="button">후기 보기</button>
+                                                    </div>
+
+                                                </div>
+
+                                                <div id="hoogi-comment">
+                                                    <div>
+                                                        <input id="commentForm" class="input is-normal" type="text">
+                                                    </div>
+                                                    <div>
+                                                        <button onclick="submitComment()" class="button">등록</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`
+                        $('#likeplace').append(temp_html)
+                    }
+                }
+            });
+        }
+
+
+
+        function like(name) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/comment',
+                data: {},
+                success: function (response) {
+                    alert(response['msg']);
+                }
+            });
+        }
+
+        function openclose() {
+            let status = $('#hoogi-comment').css('display');
+            if (status == 'none') {
+                $('#hoogi-comment').hide();
+            } else {
+                $('#hoogi-comment').show();
+            }
+
+        }
+
+        function submitComment() {
+            $("#commentForm").submit();
+        }
+    </script>
+</head>
+<body>
+
+<section class="hero is-white">
+    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
+        <h1 class="title is-sparta">GetTravel</h1>
+        <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
+    </div>
+</section>
+<section class="section">
+    <div id="likeplace">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-2by2">
+                    <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQi8WK72k8P4UXoGGchMrVX6e0SSqZXWfGRAQyZ8xVImu9IpHcmeWAKz_kgX_GO0C2lOO-qUESNPK2xr_K7Ttv0dQ"
+                         alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+
+                    <div class="media-content">
+                        <p class="title is-4">N서울타워</p>
+                        <p class="subtitle is-6">서울시 용산구</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    N서울타워는 대한민국 서울특별시 용산구 용산동2가 남산 정상 부근에 위치한 전파 송출 및 관광용 타워이다. 1969년에 착공하여 1975년 7월 30일 완공되었다. 높이는
+                    236.7m,
+                    해발 479.7m이다. 수도권의 지상파 방송사들이 이 타워를 이용하여 전파를 송출한다.
+                    <div>
+                        <a>소개링크</a>
+                        <a href="#">#css</a> <a href="#">#responsive</a>
+                        <br>
+                        <button onclick="openclose()" class="button">후기 보기</button>
+                    </div>
+
+                </div>
+
+                <div id="hoogi-comment">
+                    <div>
+                        <input id="commentForm" class="input is-normal" type="text">
+                    </div>
+                    <div>
+                        <button onclick="submitComment()" class="button">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+
+</body>
+</html>
