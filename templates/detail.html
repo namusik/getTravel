@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GetTravel | My Page </title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <!--css-->
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
+
+
+
+
+    <script>
+        function likeTrip(name) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/like',
+                data: {name_give: name},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload()
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+
+<section class="hero-is-white">
+    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
+        <a class="title is-sparta" href="/">GetTravel</a>
+        <br>
+        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
+        <button class="button" id="mypagebutton" onclick="/" >MY PAGE</button>
+        <button class="button" id="logoutbutton" >LOGOUT</button>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <img src="../static/{{ travel.file }}"
+             alt="Placeholder image" class="image">
+        <p class="name">{{travel.name}}</p>
+        <p>{{travel.address}}</p>
+        <p class="description">{{ travel.content }}</p>
+        <button onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
+        <a href="#" onclick="likeTrip('${name}')" class="icon">
+            <span class="icon">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+        </a>
+    </div>
+</section>
+</body>
+</html>
