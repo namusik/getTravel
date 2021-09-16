@@ -39,10 +39,23 @@ def admin():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/admin-edit')
+def admin_edit():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        travel_receive = request.args.get("travel_give")
+        travel = db.travels.find_one({'name': travel_receive}, {'_id': False})
+        print(travel)
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('edit.html', travel=travel, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/detail/<keyword>')
 def detail(keyword):
-
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -126,6 +139,36 @@ def upload():
 
     return jsonify({'msg': 'POST 요청 완료!'})
 
+
+@app.route('/edit-travel', methods=['POST'])
+def edit_travel():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        name_receive = request.form['name_give']
+        oldname_receive = request.form['oldname_give']
+        address_receive = request.form['address_give']
+        content_receive = request.form['content_give']
+
+        new_doc = {
+            "name": name_receive,
+            "address": address_receive,
+            "content": content_receive
+        }
+        if 'file_give' in request.files:
+            file = request.files["file_give"]
+            extension = file.filename.split('.')[-1]
+            today = datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+            filename = f'file-{mytime}'
+            save_to = f'static/{filename}.{extension}'
+            file.save(save_to)  # 경로와 이름
+            new_doc["file"] = f'{filename}.{extension}'
+        db.travels.update_one({'name': oldname_receive}, {'$set': new_doc})
+        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
@@ -179,15 +222,6 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 
-@app.route('/update_profile', methods=['POST'])
-def save_img():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 프로필 업데이트
-        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
 
 @app.route('/comment/<keyword>')
 def comment(keyword):
