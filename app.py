@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
-
 SECRET_KEY = 'SPARTA'
 
 client = MongoClient('13.125.82.238', 27017, username="test", password="test")
@@ -33,6 +32,7 @@ def home():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
 
 @app.route('/detail/<keyword>')
 def detail(keyword):
@@ -235,8 +235,6 @@ def get_comments():
         return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
-
 @app.route('/mypage')
 def mypage():
 

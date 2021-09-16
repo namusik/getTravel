@@ -5,8 +5,7 @@
     <title>Log In | GETTRAVEL</title>
 
     <!-- Bulma CSS 링크 -->
-
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
 
     <!-- Required meta tags -->
@@ -31,6 +30,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&family=Montserrat:ital,wght@0,300;0,400;1,300&display=swap"
           rel="stylesheet">
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
 
     <!-- JS -->
@@ -155,31 +155,106 @@
     }
 
 </style>
+    <script>
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
 
+        function admin() {
+            window.location.href = "/admin"
+        }
 
-
+        function mypage() {
+            window.location.href = "/mypage"
+        }
     </script>
 
 </head>
 <body>
-<section class="hero-is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-        <h1 class="title-is-sparta">Get Travel</h1>
-        <button class="button" id="mypagebutton" >MY PAGE</button>
-        <button class="button" id="logoutbutton" >LOGOUT</button>
-        {% if user_info.username == 'admin'%}
-            <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>
-        {% endif %}
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="../static/logo.png" width="112" height="28" style="border-radius:999%">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
 
-</section>
-<section class="section">
-    <div class="container">
-        {% for travel in travels %}
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
 
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" onclick="javascript:();">
+                        Comment
+                    </a>
+                    <a class="navbar-item" onclick="javascript:();">
+                        My favorite
+                    </a>
+
+                    <hr class="navbar-divider">
+                    <a class="navbar-item">
+                        Report an issue
+                    </a>
+                </div>
+            </div>
+            {% if user_info.username == 'admin'%}
+
+            <a class="navbar-item" onclick="javascript:admin();">
+                Admin
+            </a>
+            {% endif %}
+        </div>
+
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" onclick="javascript:sign_out();">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!--<section class="hero-is-white">-->
+<!--    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">-->
+<!--        <a class="title is-sparta" href="/">GetTravel</a>-->
+<!--        <br>-->
+<!--        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>-->
+<!--        <button class="button" id="mypagebutton" onclick="mypage()">MY PAGE</button>-->
+<!--        <button class="button" id="logoutbutton" onclick="sign_out()">LOGOUT</button>-->
+<!--        {% if user_info.username == 'admin'%}-->
+<!--        <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+<!--</section>-->
+<br><br><br><br><br><br><br>
+
+
+<div>
+    <section class="index-section">
+        <div class="container index-container">
+            {% for travel in travels %}
+            <div class="card index-card">
+                <div class="card-image">
+                    <figure>
                         <img src="../static/{{ travel.file }}"
                              alt="Placeholder image">
                     </figure>
@@ -187,7 +262,6 @@
                 <div class="card-content">
                     <div class="content">
                         <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
-
                         <br><br>
                         <div class="card-index">{{ travel.content }}
                         </div>
@@ -195,9 +269,12 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-</section>
+            {% endfor %}
+        </div>
+
+    </section>
+
+</div>
 
 </body>
 </html>
