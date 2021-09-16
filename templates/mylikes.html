@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Webpage Title -->
+    <title>Log In | GETTRAVEL</title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carme&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&family=Montserrat:ital,wght@0,300;0,400;1,300&display=swap"
+          rel="stylesheet">
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <style>
+    </style>
+
+</head>
+<body>
+    <section class="hero-is-white">
+        <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
+            <a class="title is-sparta" href="/">GetTravel</a>
+            <br>
+            <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
+            <button class="button" id="mypagebutton" onclick="click()">MY PAGE</button>
+            <button class="button" id="logoutbutton">LOGOUT</button>
+            {% if user_info.username == 'admin'%}
+                <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>
+            {% endif %}
+        </div>
+    </section>
+    <div>
+        <h3>내가 찜한 여행지들</h3>
+        <section class="index-section">
+            <div class="container index-container">
+                {% for travel in travels %}
+                <div class="card index-card">
+                    <div class="card-image">
+                        <figure>
+                            <img src="../static/{{ travel.file }}"
+                                 alt="Placeholder image">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="content">
+                            <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+                            <br><br>
+                            <div class="card-index">{{ travel.content }}
+                            </div>
+                            <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</body>
+</html>

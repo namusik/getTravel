@@ -11,10 +11,76 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
     <!--css-->
+
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <style>
+        body {
+
+            min-height: 100vh;
+            padding-top: 3.25rem;
+        }
+
+        .section {
+            padding: 1rem 1.5rem;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .title {
+            font-weight: 800;
+            font-size: 5rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .is-sparta {
+            color: #536dfe !important;
+        }
+
+        .button .is-sparta {
+            background-color: #536dfe;
+            border-color: transparent;
+            color: #fff !important;
+        }
+        .button.is-sparta.is-outlined {
+            background-color: transparent;
+            border-color: #e8344e;
+            color: #e8344e !important;
+        }
+        .modal-content {
+            width: 600px;
+            max-width: 80%;
+        }
+        .name {
+            font-size: 50px;
+            font-weight: 800;
+        }
+
+        .icon {
+            margin-top: 20px;
+        }
+
+        .image {
+            width: 100%;
+        }
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        .image img {
+            object-fit:cover;
+            width:100%;
+            height:100%;
+        }
+    </style>
 
     <script>
         $(document).ready(function () {
@@ -39,18 +105,16 @@
                     travelname_give: name
                 },
                 success: function (response) {
-                    {#성공시 modal 닫아주기#}
                     $("#modal-post").removeClass("is-active")
                     window.location.reload()
                 }
             })
         }
         function get_comments(name) {
-            {#post box 일단 비우기#}
             $("#comment-box").empty()
             $.ajax({
                 type: "GET",
-                url: "/get_comments",
+                url: '/get_comments',
                 data: {travelname_give: name},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -96,15 +160,15 @@
     </script>
 </head>
 <body>
-    <section class="hero is-white">
-        <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-            <a class="title is-sparta" href="/">GetTravel</a>
-            <br>
-            <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
-            <button class="button" id="mypagebutton" >MY PAGE</button>
-            <button class="button" id="logoutbutton" >LOGOUT</button>
-        </div>
-    </section>
+<section class="hero-is-white">
+    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
+        <a class="title is-sparta" href="/">GetTravel</a>
+        <br>
+        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
+        <button class="button" id="mypagebutton" >MY PAGE</button>
+        <button class="button" id="logoutbutton" >LOGOUT</button>
+    </div>
+</section>
     <section class="section">
         <div class="container">
             <img src="../static/{{ travel.file }}"
@@ -112,11 +176,9 @@
             <p class="name" id="{{ travel.name }}">{{travel.name}}</p>
         </div>
     </section>
-    {#포스팅박스#}
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
-{#                프로필 이미지 클릭시 해당 유저의 프로필로 이동하겠다는 a태크#}
                 <a class="image is-32x32" href="/user/{{ user_info.username }}">
                     <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
                 </a>
@@ -124,7 +186,6 @@
             <div class="media-content">
                 <div class="field">
                     <p class="control">
-{#                            클릭하면 modal에 is-active클래스 추가해줌#}
                           <input id="input-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?"
                                  onclick='$("#modal-post").addClass("is-active")'>
                     </p>
@@ -132,7 +193,6 @@
             </div>
         </article>
         <div class="modal" id="modal-post">
-{#                modal 외부영역 클릭시 is-active 클래스 삭제#}
                 <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
                 <div class="modal-content">
                     <div class="box">
@@ -168,16 +228,6 @@
     </section>
     <section class="section">
         <div id="comment-box" class="container">
-            <div class="box">
-                <article class="media">
-                    <div class="media-left">
-                        <a class="image is-64x64" href="#">
-                            <img class="is-rounded"
-                                 src={{ url_for("static", filename="profile_pics/profile_placeholder.png") }} alt="Image">
-                        </a>
-                    </div>
-                </article>
-            </div>
         </div>
     </section>
 </body>

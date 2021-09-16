@@ -6,16 +6,14 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
-
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('13.125.199.102', 27017, username="test", password="test")
-db = client.gettravel
+client = MongoClient('13.125.82.238', 27017, username="test", password="test")
 
+db = client.gettravel
 
 @app.route('/')
 def home():
@@ -31,31 +29,64 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
-# @app.route('/admin')
-# def admin(username):
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         status = (username == payload["admin"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-#
-#         user_info = db.users.find_one({"username": username}, {"_id": False})
-#         return render_template('admin.html', user_info=user_info, status=status)
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("/"))
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
 
 
-
-
 @app.route('/detail/<keyword>')
 def detail(keyword):
-    travel = db.travels.find_one({'name': keyword}, {'_id': False})
-    print('detail 값')
-    print(travel['name'])
-    return render_template('detail.html', travel = travel)
+
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        travel = db.travels.find_one({'name': keyword}, {'_id': False})
+        return render_template('detail.html', travel=travel, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route("/get_travel", methods=['GET'])
+def get_travel():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        travelname_receive = request.args.get("travelname_give")
+        travel = db.travels.find_one({'name': travelname_receive}, {'_id': False})
+        travel["count_heart"] = db.likes.count_documents({"travelname": travel["name"], "type": "heart"})
+        travel["heart_by_me"] = bool(db.likes.find_one({"travelname": travel["name"], "type": "heart", "username": payload['id']}))
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "travel" : travel})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route('/update_like', methods=['POST'])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # 누가 좋아요 눌렀느지는 토큰에서 아이디 꺼내면 바로 알 수 있음
+        user_info = db.users.find_one({"username": payload["id"]})
+        # 어떤 글인지
+        travelname_receive = request.form["travelname_give"]
+        # 어떤 종류의 반응인지
+        type_receive = request.form["type_give"]
+        action_receive = request.form["action_give"]
+        doc = {
+            "travelname": travelname_receive,
+            "username": user_info["username"],
+            "type": type_receive
+        }
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+        # 해당 글에 좋아요가 몇개인지
+        count = db.likes.count_documents({"travelname": travelname_receive, "type": type_receive})
+        return jsonify({"result": "success", 'msg': 'updated', "count": count})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -204,6 +235,57 @@ def get_comments():
         return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+@app.route('/mypage')
+def mypage():
+
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+
+        return render_template('mypage.html', user_info=user_info)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+@app.route("/get_mycomments", methods=['GET'])
+def get_mycomments():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        username_receive = request.args.get("username_give")
+        print('유저네임'+username_receive)
+        comments = list(db.comments.find({"username": username_receive}).sort("date", -1).limit(20))
+        for comment in comments:
+            print('나의코멘트 불러오기')
+
+            print(comment)
+            comment["_id"] = str(comment["_id"])
+        return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+@app.route("/mylike")
+def mylikes():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        all_likes = list(db.likes.find({"username": payload["id"]}, {'_id': False}))
+        print(all_likes)
+        all_travel = []
+        for like in all_likes:
+            travel = db.travels.find_one({'name': like['travelname']}, {'_id': False})
+            all_travel.append(travel)
+        print(all_travel)
+        return render_template('mylikes.html', user_info=user_info, travels=all_travel)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

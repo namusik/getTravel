@@ -1,0 +1,108 @@
+body {
+    min-height: 100vh;
+}
+
+.section {
+    padding: 1rem 1.5rem;
+    max-width: 750px;
+    margin: auto;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 5rem;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.subtitle {
+    font-size: 2rem;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.is-sparta {
+    color: #536dfe !important;
+}
+
+.button .is-sparta {
+    background-color: #536dfe;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.admin-container {
+    padding-left: 50px;
+}
+
+.custom-file {
+    margin-bottom: 30px;
+}
+
+.image {
+    width: 100%;
+}
+
+.posing-box {
+    width: 500px;
+    margin-top: 20px;
+}
+
+
+.card-title {
+    font-size: 14px;
+}
+
+.card-index {
+    font-size: 10px;
+}
+
+.index-card {
+    float:left;
+    margin-right:20px;
+    margin-bottom:40px;
+    width:250px;
+}
+
+.content {
+    text-align: center;
+    color: #777;
+}
+
+button:hover {
+
+    background-color: #8d7b74;
+}
+
+#mypagebutton {
+    font-family: 'Carme', sans-serif;
+    font-family: 'Fraunces', serif;
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    top: 100px;
+    right: 30px;
+}
+
+#logoutbutton {
+    font-family: 'Carme', sans-serif;
+    font-family: 'Fraunces', serif;
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    top: 100px;
+    right: 150px;
+}
+
+#adminbutton {
+    font-family: 'Carme', sans-serif;
+    font-family: 'Fraunces', serif;
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    top: 100px;
+    right: 270px;
+}
+
+.read-more {
+    font-family: 'Carme', sans-serif;
+    font-family: 'Fraunces', serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 5px;
+}

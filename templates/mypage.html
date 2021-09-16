@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GetTravel | My Page </title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            padding-top: 3.25rem;
+        }
+
+        .section {
+            padding: 1rem 1.5rem;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .title {
+            font-weight: 800;
+            font-size: 5rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .is-sparta {
+            color: #536dfe !important;
+        }
+
+        .button .is-sparta {
+            background-color: #536dfe;
+            border-color: transparent;
+            color: #fff !important;
+        }
+        .button.is-sparta.is-outlined {
+            background-color: transparent;
+            border-color: #e8344e;
+            color: #e8344e !important;
+        }
+        .modal-content {
+            width: 600px;
+            max-width: 80%;
+        }
+        .name {
+            font-size: 50px;
+            font-weight: 800;
+        }
+
+        .icon {
+            margin-top: 20px;
+        }
+
+        .image {
+            width: 100%;
+        }
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        .image img {
+            object-fit:cover;
+            width:100%;
+            height:100%;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            get_mycomments('{{ user_info.username }}')
+        })
+
+        function get_mycomments(username) {
+
+
+            $("#comment-box").empty()
+            $.ajax({
+                type: "GET",
+
+                url: `/get_mycomments?username_give=${username}`,
+
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let comments = response["comments"]
+                        console.log(comments)
+                        for (let i = 0; i < comments.length; i++) {
+                            let comment = comments[i]
+                            let time_post = new Date(comment["date"])
+                            let html_temp = `<div class="box" id="${comment["_id"]}">
+                                                <article class="media">
+                                                    <div class="media-left">
+                                                        <a class="image is-64x64" href="/user/${comment['username']}">
+
+                                                            <img class="is-rounded" src="/static/${comment['profile_pic_real']}"
+                                                                 alt="Image">
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-content">
+                                                        <div class="content">
+                                                            <p>
+                                                                <strong>${comment['profile_name']}</strong> <small>@${comment['username']}</small> <small>${time_post}</small>
+                                                                <br>
+                                                                ${comment['comment']}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>`
+                            $("#comment-box").append(html_temp)
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <section class="hero is-white">
+        <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
+            <h1 class="title is-sparta">GetTravel</h1>
+            <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
+            <a>mypage</a>
+        </div>
+    </section>
+    <section class="section">
+        <div id="comment-box" class="container">
+            <div class="box">
+                <article class="media">
+                    <div class="media-left">
+                        <a class="image is-64x64" href="#">
+                            <img class="is-rounded"
+                                 src={{ url_for("static", filename="profile_pics/profile_placeholder.png") }} alt="Image">
+                        </a>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>홍길동</strong> <small>@username</small> <small>10분 전</small>
+                                <br>
+                                글을 적는 칸
+                            </p>
+                        </div>
+                        <nav class="level is-mobile">
+                            <div class="level-left">
+                                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('', 'heart')">
+                                    <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;<span class="like-num">2.7k</span>
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
