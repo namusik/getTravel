@@ -9,54 +9,92 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
+
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
+            font-family: 'Jua', sans-serif;
             min-height: 100vh;
         }
 
         .section {
             padding: 1rem 1.5rem;
-            max-width: 750px;
             margin: auto;
+            background-color: #f4f4f4;
         }
 
-        .title {
-            font-weight: 800;
-            font-size: 5rem;
-            font-family: 'Nanum Gothic', sans-serif;
-        }
 
-        .subtitle {
-            font-size: 2rem;
-            font-family: 'Nanum Gothic', sans-serif;
-        }
 
-        .is-sparta {
-            color: #536dfe !important;
-        }
 
-        .button .is-sparta {
-            background-color: #536dfe;
-            border-color: transparent;
-            color: #fff !important;
+        .comment-btn {
+
+            background-color: #872AE0;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 8px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Jua', sans-serif;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            float: right;
         }
 
         .name {
-            font-size: 50px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 600;
         }
+
         .description {
             margin-top: 10px;
+            height: 330px;
+            overflow: auto;
+        }
+
+        .description::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .description::-webkit-scrollbar-thumb {
+            background-color: #E0E0E0;
+            border-radius: 10px;
+        }
+
+        .description::-webkit-scrollbar-track {
+            background-color: #F5F5F5;
+            border-radius: 10px;
         }
 
         .icon {
             margin-top: 20px;
         }
 
-        .image {
-            width: 100%;
+        img {
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .arrange {
+            display: flex;
+        }
+
+        .left-div {
+            width: 800px;
+            height: 600px;
+            margin-right: 20px;
+        }
+
+        .right-div {
+            width: 400px;
+            height: 700px;
+        }
+        .last-div{
+            margin: auto;
         }
 
     </style>
@@ -77,25 +115,83 @@
 </head>
 <body>
 
-<section class="hero is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-        <h1 class="title is-sparta">GetTravel</h1>
-        <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-        <img src="../static/{{ travel.file }}"
-             alt="Placeholder image" class="image">
-        <p class="name">{{travel.name}}</p>
-        <p>{{travel.address}}</p>
-        <p class="description">{{ travel.content }}</p>
-        <button onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
-        <a href="#" onclick="likeTrip('${name}')" class="icon">
-            <span class="icon">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="../static/logo.png" width="112" height="28">
         </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item">
+                Home
+            </a>
+
+            <a class="navbar-item">
+                Documentation
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        My profile
+                    </a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item">
+                        My comments
+                    </a>
+                    <a class="navbar-item">
+                        My likes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light">
+                        <strong>Sign up</strong>
+                    </a>
+                    <a class="button is-light">
+                        Log in
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<section class="section">
+    <div class="container arrange">
+        <div class="left-div">
+            <img src="../static/{{ travel.file }}"
+                 alt="Placeholder image" class="image">
+        </div>
+        <div class="right-div">
+            <div>
+                <p class="name">{{ travel.name }}</p>
+                <p>{{ travel.address }}</p>
+                <p class="description">{{ travel.content }}</p>
+            </div>
+            <div class="last-div">
+                <a href="#" onclick="likeTrip('${name}')" class="icon"><span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                </a>
+                <button class="comment-btn" onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
+            </div>
+
+        </div>
+
     </div>
 </section>
 </body>
