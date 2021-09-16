@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!-- Webpage Title -->
-    <title>Log In | GETTRAVEL</title>
+    <title>Home | Get Travel</title>
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -10,22 +10,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bulma CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&family=Montserrat:ital,wght@0,300;0,400;1,300&display=swap"
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -47,98 +38,81 @@
 
 </head>
 <body>
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="">
-            <img src="../static/logo.png" width="112" height="28">
-        </a>
-
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="/">
-                Home
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="../static/logo.png" width="112" height="28">
             </a>
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    Mypage
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    Home
                 </a>
-                <div class="navbar-dropdown">
-                    <a class="navbar-item" onclick="window.location.href='/mypage'">
-                        Comment
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Mypage
                     </a>
-                    <a class="navbar-item" onclick="window.location.href='/mylike'">
-                        My favorite
-                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" onclick="window.location.href='/mypage'">
+                            My Comment
+                        </a>
+                        <a class="navbar-item" onclick="window.location.href='/mylike'">
+                            My favorite
+                        </a>
 
+                    </div>
                 </div>
+                {% if user_info.username == 'admin'%}
+
+                <a class="navbar-item" onclick="window.location.href='/admin'">
+                    Admin
+                </a>
+                {% endif %}
             </div>
-            {% if user_info.username == 'admin'%}
-
-            <a class="navbar-item" onclick="window.location.href='/admin'">
-                Admin
-            </a>
-            {% endif %}
-        </div>
 
 
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-light" onclick="javascript:sign_out();">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
-<!--<section class="hero-is-white">-->
-<!--    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">-->
-<!--        <a class="title is-sparta" href="/">GetTravel</a>-->
-<!--        <br>-->
-<!--        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>-->
-<!--        <button class="button" id="mypagebutton" onclick="mypage()">MY PAGE</button>-->
-<!--        <button class="button" id="logoutbutton" onclick="sign_out()">LOGOUT</button>-->
-<!--        {% if user_info.username == 'admin'%}-->
-<!--        <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>-->
-<!--        {% endif %}-->
-<!--    </div>-->
-<!--</section>-->
-<br><br><br><br><br><br><br>
-<div>
-    <section class="index-section">
-        <div class="container index-container">
-            {% for travel in travels %}
-            <div class="card index-card">
-                <div class="card-image">
-                    <figure>
-                        <img src="../static/{{ travel.file }}"
-                             alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
-                        <br><br>
-                        <div class="card-index">{{ travel.content }}
-                        </div>
-                        <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" onclick="javascript:sign_out();">
+                            Logout
+                        </a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-
-    </section>
-
-</div>
-
+    </nav>
+    <div class="pic-title">
+        <img class="back_img" src="../static/1.jpg">
+        <span class="main-title">GET TRAVEL</span>
+    </div>
+    <div>
+        <section class="index-section">
+            <div class="container index-container">
+                {% for travel in travels %}
+                <div class="card index-card">
+                    <div class="card-image">
+                        <figure>
+                            <img src="../static/{{ travel.file }}"
+                                 alt="Placeholder image">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="content">
+                            <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
 </body>
 </html>

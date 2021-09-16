@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>GetTravel | My Page </title>
+    <title>My Comment | Get Travel</title>
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -11,7 +11,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <!--    font css-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
@@ -19,6 +19,11 @@
         body {
             font-family: 'Jua', sans-serif;
 
+        }
+
+        .mycomment-title{
+            font-size: 50px;
+            text-align: center;
         }
     </style>
     <script>
@@ -79,64 +84,68 @@
     </script>
 </head>
 <body>
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="">
-            <img src="../static/logo.png" width="112" height="28">
-        </a>
-
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="/">
-                Home
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="../static/logo.png" width="112" height="28">
             </a>
 
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    Mypage
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    Home
                 </a>
 
-                <div class="navbar-dropdown">
-                    <a class="navbar-item" onclick="window.location.href='/mypage'">
-                        Comment
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Mypage
                     </a>
-                    <a class="navbar-item" onclick="window.location.href='/mylike'">
-                        My favorite
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" onclick="window.location.href='/mypage'">
+                            Comment
+                        </a>
+                        <a class="navbar-item" onclick="window.location.href='/mylike'">
+                            My favorite
+                        </a>
+                    </div>
+                </div>
+                {% if user_info.username == 'admin' %}
+
+                    <a class="navbar-item" onclick="window.location.href='/admin'">
+                        Admin
                     </a>
+                {% endif %}
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" onclick="javascript:sign_out();">
+                            Logout
+                        </a>
+                    </div>
                 </div>
             </div>
-            {% if user_info.username == 'admin'%}
-
-            <a class="navbar-item" onclick="window.location.href='/admin'">
-                Admin
-            </a>
-            {% endif %}
         </div>
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-light" onclick="javascript:sign_out();">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
+    </nav>
+    <div class="pic-title">
+        <img class="back_img" src="../static/1.jpg">
+        <span class="main-title">GET TRAVEL</span>
     </div>
-</nav>
-<div>
-    <h3>나의 후기</h3>
-</div>
-<section class="section">
-    <div id="comment-box" class="container">
+    <div class="mycomment-title">
+        나의 후기
+    </div>
+    <section class="section">
+        <div id="comment-box" class="container">
 
-    </div>
-</section>
+        </div>
+    </section>
 </body>
 </html>
