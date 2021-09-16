@@ -40,7 +40,6 @@
 
 </head>
 <body>
-
     <section class="hero-is-white">
         <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
             <a class="title is-sparta" href="/">GetTravel</a>
@@ -53,33 +52,31 @@
             {% endif %}
         </div>
     </section>
-
-
-<div>
-    <section class="index-section">
-        <div class="container index-container">
-            {% for travel in travels %}
-            <div class="card index-card">
-                <div class="card-image">
-                    <figure>
-                        <img src="../static/{{ travel.file }}"
-                             alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
-                        <br><br>
-                        <div class="card-index">{{ travel.content }}
+    <div>
+        <h3>내가 찜한 여행지들</h3>
+        <section class="index-section">
+            <div class="container index-container">
+                {% for travel in travels %}
+                <div class="card index-card">
+                    <div class="card-image">
+                        <figure>
+                            <img src="../static/{{ travel.file }}"
+                                 alt="Placeholder image">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="content">
+                            <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+                            <br><br>
+                            <div class="card-index">{{ travel.content }}
+                            </div>
+                            <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
                         </div>
-                        <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-
-</section>
-</div>
+        </section>
+    </div>
 </body>
 </html>
