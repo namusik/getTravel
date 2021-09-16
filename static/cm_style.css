@@ -16,6 +16,21 @@ body {
     margin-bottom:70px;
 }
 
+.pic-title {
+    position: relative;
+}
+
+.main-title {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+}
+
+.pic-title span {
+    font-size: 80px;
+    color: #2487A5;
+}
+
 .section {
     padding: 1rem 1.5rem;
 

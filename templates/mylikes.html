@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!-- Webpage Title -->
-    <title>Log In | GETTRAVEL</title>
+    <title>my favorite | Get Travel</title>
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -16,14 +16,8 @@
 
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +35,10 @@
         body {
             font-family: 'Jua', sans-serif;
             min-height: 100vh;
+        }
+        .mycomment-title{
+            font-size: 50px;
+            text-align: center;
         }
     </style>
     <script>
@@ -108,7 +106,13 @@
     </div>
 </nav>
 <div>
-    <h3>내가 찜한 여행지들</h3>
+    <div class="pic-title">
+        <img class="back_img" src="../static/1.jpg">
+        <span class="main-title">GET TRAVEL</span>
+    </div>
+    <div class="mycomment-title">
+        내가 찜한 여행지들
+    </div>
     <section class="index-section">
         <div class="container index-container">
             {% for travel in travels %}
