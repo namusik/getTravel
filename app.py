@@ -12,7 +12,6 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
 client = MongoClient('13.125.82.238', 27017, username="test", password="test")
-
 db = client.gettravel
 
 @app.route('/')
@@ -235,6 +234,7 @@ def get_comments():
         return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
 @app.route('/mypage')
 def mypage():
 
@@ -286,6 +286,5 @@ def mylikes():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

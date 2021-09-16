@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
     <!--css-->
 
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
@@ -19,7 +18,6 @@
 
     <style>
         body {
-
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -105,16 +103,19 @@
                     travelname_give: name
                 },
                 success: function (response) {
+
                     $("#modal-post").removeClass("is-active")
                     window.location.reload()
                 }
             })
         }
         function get_comments(name) {
+
             $("#comment-box").empty()
             $.ajax({
                 type: "GET",
                 url: '/get_comments',
+
                 data: {travelname_give: name},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -160,6 +161,7 @@
     </script>
 </head>
 <body>
+
 <section class="hero-is-white">
     <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
         <a class="title is-sparta" href="/">GetTravel</a>
@@ -169,6 +171,7 @@
         <button class="button" id="logoutbutton" >LOGOUT</button>
     </div>
 </section>
+
     <section class="section">
         <div class="container">
             <img src="../static/{{ travel.file }}"
@@ -176,6 +179,7 @@
             <p class="name" id="{{ travel.name }}">{{travel.name}}</p>
         </div>
     </section>
+
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
