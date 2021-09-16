@@ -158,19 +158,77 @@
                 }
             })
         }
+
+         function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+        function admin() {
+            window.location.href = "/admin"
+        }
+
+        function mypage() {
+            window.location.href = "/mypage"
+        }
     </script>
 </head>
 <body>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="../static/logo.png" width="112" height="28">
+        </a>
 
-<section class="hero-is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
-        <a class="title is-sparta" href="/">GetTravel</a>
-        <br>
-        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
-        <button class="button" id="mypagebutton" >MY PAGE</button>
-        <button class="button" id="logoutbutton" >LOGOUT</button>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
-</section>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" onclick="javascript:();">
+                        Comment
+                    </a>
+                    <a class="navbar-item" onclick="javascript:();">
+                        My favorite
+                    </a>
+
+                </div>
+            </div>
+            {% if user_info.username == 'admin'%}
+
+            <a class="navbar-item" onclick="javascript:admin();">
+                Admin
+            </a>
+            {% endif %}
+        </div>
+
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" onclick="javascript:sign_out();">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 
     <section class="section">
         <div class="container">

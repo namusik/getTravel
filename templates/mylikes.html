@@ -29,6 +29,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&family=Montserrat:ital,wght@0,300;0,400;1,300&display=swap"
           rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <!-- JS -->
@@ -36,47 +38,108 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <style>
+        body {
+            font-family: 'Jua', sans-serif;
+            min-height: 100vh;
+        }
     </style>
+    <script>
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+        function admin() {
+            window.location.href = "/admin"
+        }
+
+        function mypage() {
+            window.location.href = "/mypage"
+        }
+    </script>
 
 </head>
 <body>
-    <section class="hero-is-white">
-        <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-            <a class="title is-sparta" href="/">GetTravel</a>
-            <br>
-            <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
-            <button class="button" id="mypagebutton" onclick="click()">MY PAGE</button>
-            <button class="button" id="logoutbutton">LOGOUT</button>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="../static/logo.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" onclick="javascript:();">
+                        Comment
+                    </a>
+                    <a class="navbar-item" onclick="javascript:();">
+                        My favorite
+                    </a>
+
+                </div>
+            </div>
             {% if user_info.username == 'admin'%}
-                <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>
+
+            <a class="navbar-item" onclick="javascript:admin();">
+                Admin
+            </a>
             {% endif %}
         </div>
-    </section>
-    <div>
-        <h3>내가 찜한 여행지들</h3>
-        <section class="index-section">
-            <div class="container index-container">
-                {% for travel in travels %}
-                <div class="card index-card">
-                    <div class="card-image">
-                        <figure>
-                            <img src="../static/{{ travel.file }}"
-                                 alt="Placeholder image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="content">
-                            <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
-                            <br><br>
-                            <div class="card-index">{{ travel.content }}
-                            </div>
-                            <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
+
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" onclick="javascript:sign_out();">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div>
+    <h3>내가 찜한 여행지들</h3>
+    <section class="index-section">
+        <div class="container index-container">
+            {% for travel in travels %}
+            <div class="card index-card">
+                <div class="card-image">
+                    <figure>
+                        <img src="../static/{{ travel.file }}"
+                             alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+                        <br><br>
+                        <div class="card-index">{{ travel.content }}
                         </div>
+                        <a class="read-more" href="/detail/{{ travel.name }}">READ MORE >></a>
                     </div>
                 </div>
-                {% endfor %}
             </div>
-        </section>
-    </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
 </body>
 </html>
