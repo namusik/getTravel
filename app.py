@@ -11,7 +11,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('13.125.199.102', 27017, username="test", password="test")
+client = MongoClient('13.125.82.238', 27017, username="test", password="test")
 db = client.gettravel
 
 @app.route('/')
@@ -20,7 +20,6 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         all_travels = list(db.travels.find({}, {'_id': False}))
-        print(all_travels)
         user_info = db.users.find_one({"username": payload["id"]})
         return render_template('index.html', user_info=user_info, travels=all_travels)
     except jwt.ExpiredSignatureError:
@@ -30,7 +29,15 @@ def home():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('admin.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 @app.route('/detail/<keyword>')
@@ -237,14 +244,11 @@ def get_comments():
 
 @app.route('/mypage')
 def mypage():
-
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-
         return render_template('mypage.html', user_info=user_info)
-
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
