@@ -7,27 +7,33 @@
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
-
         body {
             font-family: 'Jua', sans-serif;
+
+     <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: RGBA(232, 52, 78, 0.2);
+
             min-height: 100vh;
         }
-
         .section {
             padding: 1rem 1.5rem;
+
             margin: auto;
             background-color: #f4f4f4;
         }
-
-
-
-
         .comment-btn {
 
             background-color: #872AE0;
@@ -74,6 +80,7 @@
             margin-top: 20px;
         }
 
+
         img {
             object-fit: cover;
             border-radius: 15px;
@@ -99,18 +106,97 @@
 
     </style>
     <script>
-        function likeTrip(name) {
-            $.ajax({
-                type: 'POST',
-                url: '/api/like',
-                data: {name_give: name},
-                success: function (response) {
-                    alert(response['msg']);
-                    window.location.reload()
-                }
-            });
+        $(document).ready(function () {
+            //자바스크립트 안이기 때문에 ''로 문자처리해줘야한다
+            get_travel('{{ travel.name }}')
+        })
+
+        function toggle_like(travel_name, type) {
+            console.log(travel_name, type)
+            let $a_like = $(`#${travel_name} a[aria-label='heart']`)
+            console.log($a_like)
+            let $i_like = $a_like.find("i")
+            console.log($i_like)
+            if ($i_like.hasClass("fa-heart")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        travelname_give: travel_name,
+                        type_give: type,
+                        action_give: "unlike"
+                    },
+                    success: function (response) {
+                        console.log("unlike")
+                        $i_like.addClass("fa-heart-o").removeClass("fa-heart")
+                        $a_like.find("span.like-num").text(num2str(response["count"]))
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        travelname_give: travel_name,
+                        type_give: type,
+                        action_give: "like"
+                    },
+                    success: function (response) {
+                        console.log("like")
+                        $i_like.addClass("fa-heart").removeClass("fa-heart-o")
+                        $a_like.find("span.like-num").text(response["count"])
+                    }
+                })
+
+            }
         }
 
+        function num2str(count) {
+            if (count > 10000) {
+                return parseInt(count / 1000) + "k"
+            } if (count > 500) {
+                return parseInt(count / 100) / 10 + "k"
+            } if (count == 0) {
+                return ""
+            } return count
+            }
+        function get_travel(travelname) {
+            {#post box 일단 비우기#}
+            $("#post-box").empty()
+            $.ajax({
+                type: "GET",
+                url: `/get_travel?travelname_give=${travelname}`,
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let travel = response["travel"]
+                        //내가 좋아요 했는지 안했는지 확인
+                        let class_heart = travel['heart_by_me'] ? "fa-heart" : "fa-heart-o"
+                        //하트 숫자
+                        let count_heart = travel['count_heart']
+                        let html_temp = `<div class="container" id="${travel['name']}">
+                                        <img src="../static/${travel['file']}"
+                                             alt="Placeholder image" class="image">
+                                        <p class="name">${travel['name']}</p>
+                                        <p>${travel['address']}</p>
+                                        <p class="description">${travel['content']}</p>
+                                        <button onclick="window.location.href='/comment/${travel['name']}'">후기 쓰러가기</button>
+                                        <nav class="level is-mobile">
+                                            <div class="level-left">
+                                                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${travel['name']}', 'heart')">
+                                                    <span class="icon is-small">
+                                                        <i class="fa ${class_heart}" aria-hidden="true"></i>
+                                                    </span>
+                                                    <span class="like-num">${num2str(count_heart)}</span>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>`
+                        $(".section").append(html_temp)
+                    }
+                }
+            })
+        }
     </script>
 </head>
 <body>

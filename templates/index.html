@@ -5,7 +5,9 @@
     <title>Log In | GETTRAVEL</title>
 
     <!-- Bulma CSS 링크 -->
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -30,11 +32,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Carme&family=Fraunces:wght@500&family=Montserrat:ital,wght@0,300;0,400;1,300&display=swap"
           rel="stylesheet">
 
+
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <style>
+
     body {
         background-color: RGBA(232, 52, 78, 0.2);
         min-height: 100vh;
@@ -163,6 +167,9 @@
         <h1 class="title-is-sparta">Get Travel</h1>
         <button class="button" id="mypagebutton" >MY PAGE</button>
         <button class="button" id="logoutbutton" >LOGOUT</button>
+        {% if user_info.username == 'admin'%}
+            <button class="button" id="adminbutton" onclick="window.location.href='/admin'">ADMIN</button>
+        {% endif %}
     </div>
 
 </section>
@@ -172,13 +179,15 @@
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-4by3">
+
                         <img src="../static/{{ travel.file }}"
                              alt="Placeholder image">
                     </figure>
                 </div>
                 <div class="card-content">
                     <div class="content">
-                        <a class="card-title">{{travel.name}}</a>
+                        <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+
                         <br><br>
                         <div class="card-index">{{ travel.content }}
                         </div>
@@ -189,5 +198,6 @@
         {% endfor %}
     </div>
 </section>
+
 </body>
 </html>

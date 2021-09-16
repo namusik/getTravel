@@ -12,6 +12,8 @@
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -111,10 +113,15 @@
 </head>
 
 <body>
-<section class="hero is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-        <h1 class="title is-sparta">GetTravel</h1>
-        <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
+
+<section class="hero-is-white">
+    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
+        <a class="title is-sparta" href="/">GetTravel</a>
+        <br>
+        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
+        <button class="button" id="mypagebutton" >MY PAGE</button>
+        <button class="button" id="logoutbutton" >LOGOUT</button>
+
     </div>
 </section>
 <div class="wrap">
