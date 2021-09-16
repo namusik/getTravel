@@ -1,53 +1,72 @@
 <!doctype html>
 <html lang="en">
     <head>
+​
         <!-- Webpage Title -->
         <title>Log In | GETTRAVEL</title>
+​
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+​
         <!-- Bulma CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css?after">
         <!-- Font Awesome CSS -->
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css?after" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+​
         <style>
+​
             body {
                 background-color: RGBA(232, 52, 78, 0.2);
                 min-height: 100vh;
             }
+​
             .section {
                 padding: 1rem 1.5rem;
                 max-width: 750px;
                 margin: auto;
             }
+​
             .title {
                 font-weight: 800;
                 font-size: 5rem;
                 font-family: 'Nanum Gothic', sans-serif;
             }
+​
             .subtitle {
                 font-size: 2rem;
                 font-family: 'Nanum Gothic', sans-serif;
             }
-            .is-sparta {
+​
+             .is-sparta{
                 color: #536dfe !important;
+                background-color: #536dfe;
+                border-color: transparent;
             }
-            .button.is-sparta {
+​
+            .button {
                 background-color: #536dfe;
                 border-color: transparent;
                 color: #fff !important;
             }
-            .button.is-sparta.is-outlined {
+​
+            .button .is-sparta .is-outlined {
                 background-color: transparent;
                 border-color: #536dfe;
                 color: #536dfe !important;
             }
+            .is-outlined {
+                background-color: transparent;
+                border-color: #536dfe;
+                color: #536dfe !important;
+            }
+​
             .help {
                 color: gray;
             }
@@ -56,40 +75,26 @@
             // {% if msg %}
             //     alert("{{ msg }}")
             // {% endif %}
-            // 로그인 클라이언트
             function sign_in() {
-                let username = $("#input-username").val()
-                let password = $("#input-password").val()
-                if (username == "") {
-                    $("#help-id-login").text("아이디를 입력해주세요.")
-                    $("#input-username").focus()
-                    return;
-                } else {
-                    $("#help-id-login").text("")
-                }
-                if (password == "") {
-                    $("#help-password-login").text("비밀번호를 입력해주세요.")
-                    $("#input-password").focus()
-                    return;
-                } else {
-                    $("#help-password-login").text("")
-                }
                 $.ajax({
                     type: "POST",
                     url: "/sign_in",
                     data: {
-                        username_give: username,
-                        password_give: password
+                        username_give: "",
+                        password_give: ""
                     },
                     success: function (response) {
                         if (response['result'] == 'success') {
                             $.cookie('mytoken', response['token'], {path: '/'});
-                            window.location.replace("/")
+​
+                            alert('로그인 완료!')
+                            window.location.href = '/'
                         } else {
+                            // 로그인이 안되면 에러메시지를 띄웁니다.
                             alert(response['msg'])
                         }
                     }
-                });
+                })
             }
             // 회원가입 클라이언트
             function sign_up() {
@@ -97,6 +102,7 @@
                 let password = $("#input-password").val()
                 let password2 = $("#input-password2").val()
                 console.log(username, password, password2)
+​
                 // 아이디 중복검사 완료확인
                 if ($("#help-id").hasClass("is-danger")) {
                     alert("아이디를 다시 확인해주세요.")
@@ -140,6 +146,7 @@
                         window.location.replace("/login")
                     }
                 });
+​
             }
             // 로그인 화면 숨기고 회원가입 화면
             function toggle_sign_up() {
@@ -155,6 +162,7 @@
                 var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
                 return regExp.test(asValue);
             }
+​
             function is_password(asValue) {
                 var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
                 return regExp.test(asValue);
@@ -181,6 +189,7 @@
                         username_give: username
                     },
                     success: function (response) {
+​
                         if (response["exists"]) {
                             $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
                             $("#input-username").focus()
@@ -188,10 +197,12 @@
                             $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
                         }
                         $("#help-id").removeClass("is-loading")
+​
                     }
                 });
             }
         </script>
+​
     </head>
     <body>
         <section class="hero is-white">
@@ -214,9 +225,11 @@
                                     <div id="btn-check-dup" class="control is-hidden">
                                         <button class="button is-sparta" onclick="check_dup()">중복확인</button>
                                     </div>
+​
                                 </div>
                                 <p id="help-id" class="help is-hidden">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
                                 <p id="help-id-login" class="help is-danger"></p>
+​
                                 <div class="field">
                                     <div class="control has-icons-left">
                                         <input id="input-password" class="input" type="password" placeholder="비밀번호">
@@ -225,22 +238,27 @@
                                     <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도
                                         사용 가능합니다.</p>
                                 </div>
+​
+​
                             </div>
                             <div id="div-sign-in-or-up" class="has-text-centered">
                                 <nav class="level is-mobile">
                                     <button class="level-item button is-sparta" onclick="sign_in()">
                                         로그인
                                     </button>
+​
                                 </nav>
                                 <hr>
                                 <h4 class="mb-3">아직 회원이 아니라면</h4>
                                 <nav class="level is-mobile">
+​
                                     <button class="level-item button is-sparta is-outlined"
                                             onclick="toggle_sign_up()">
                                         회원가입하기
                                     </button>
                                 </nav>
                             </div>
+​
                             <div id="sign-up-box" class="is-hidden">
                                 <div class="mb-5">
                                     <div class="field">
@@ -250,6 +268,7 @@
                                             <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                                         </div>
                                         <p id="help-password2" class="help is-hidden">비밀번호를 다시 한 번 입력해주세요.</p>
+​
                                     </div>
                                 </div>
                                 <nav class="level is-mobile">
@@ -261,9 +280,12 @@
                                     </button>
                                 </nav>
                             </div>
+​
+​
                         </div>
                     </article>
                 </div>
+​
             </div>
         </section>
     </body>

@@ -6,7 +6,6 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
@@ -14,8 +13,8 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
 client = MongoClient('13.125.82.238', 27017, username="test", password="test")
-db = client.gettravel
 
+db = client.gettravel
 
 @app.route('/')
 def home():
@@ -37,6 +36,7 @@ def admin():
 
 @app.route('/detail/<keyword>')
 def detail(keyword):
+
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -236,17 +236,22 @@ def get_comments():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+
 @app.route('/mypage')
 def mypage():
+
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
+
         return render_template('mypage.html', user_info=user_info)
+
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route("/get_mycomments", methods=['GET'])
 def get_mycomments():
@@ -259,12 +264,12 @@ def get_mycomments():
         comments = list(db.comments.find({"username": username_receive}).sort("date", -1).limit(20))
         for comment in comments:
             print('나의코멘트 불러오기')
+
             print(comment)
             comment["_id"] = str(comment["_id"])
         return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
 @app.route("/mylike")
 def mylikes():
     token_receive = request.cookies.get('mytoken')

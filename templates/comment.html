@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
+
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <style>
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
+
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -99,18 +101,18 @@
                     travelname_give: name
                 },
                 success: function (response) {
-                    {#성공시 modal 닫아주기#}
                     $("#modal-post").removeClass("is-active")
                     window.location.reload()
                 }
             })
         }
         function get_comments(name) {
-            {#post box 일단 비우기#}
+
             $("#comment-box").empty()
             $.ajax({
                 type: "GET",
                 url: '/get_comments',
+
                 data: {travelname_give: name},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -156,6 +158,7 @@
     </script>
 </head>
 <body>
+
 <section class="hero-is-white">
     <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
         <a class="title is-sparta" href="/">GetTravel</a>
@@ -165,6 +168,7 @@
         <button class="button" id="logoutbutton" >LOGOUT</button>
     </div>
 </section>
+
     <section class="section">
         <div class="container">
             <img src="../static/{{ travel.file }}"
@@ -172,11 +176,10 @@
             <p class="name" id="{{ travel.name }}">{{travel.name}}</p>
         </div>
     </section>
-    {#포스팅박스#}
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
-{#                프로필 이미지 클릭시 해당 유저의 프로필로 이동하겠다는 a태크#}
+
                 <a class="image is-32x32" href="/user/{{ user_info.username }}">
                     <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
                 </a>
@@ -184,7 +187,6 @@
             <div class="media-content">
                 <div class="field">
                     <p class="control">
-{#                            클릭하면 modal에 is-active클래스 추가해줌#}
                           <input id="input-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?"
                                  onclick='$("#modal-post").addClass("is-active")'>
                     </p>
@@ -192,7 +194,6 @@
             </div>
         </article>
         <div class="modal" id="modal-post">
-{#                modal 외부영역 클릭시 is-active 클래스 삭제#}
                 <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
                 <div class="modal-content">
                     <div class="box">

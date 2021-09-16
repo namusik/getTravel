@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <style>
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -75,7 +74,6 @@
             height:100%;
         }
     </style>
-
     <script>
         $(document).ready(function () {
             get_mycomments('{{ user_info.username }}')
@@ -83,10 +81,13 @@
 
         function get_mycomments(username) {
 
+
             $("#comment-box").empty()
             $.ajax({
                 type: "GET",
+
                 url: `/get_mycomments?username_give=${username}`,
+
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -98,7 +99,8 @@
                             let html_temp = `<div class="box" id="${comment["_id"]}">
                                                 <article class="media">
                                                     <div class="media-left">
-                                                       <a class="image is-64x64" href="/user/${comment['username']}">
+                                                        <a class="image is-64x64" href="/user/${comment['username']}">
+
                                                             <img class="is-rounded" src="/static/${comment['profile_pic_real']}"
                                                                  alt="Image">
                                                         </a>
