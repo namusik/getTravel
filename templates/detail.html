@@ -19,13 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <!-- Font Awesome CSS -->
-
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-
     <style>
         body {
             font-family: 'Jua', sans-serif;
@@ -93,7 +87,10 @@
             margin: auto;
         }
 
-
+        .modal-content {
+            width: 600px;
+            max-width: 80%;
+        }
 
         .left-div {
             width: 800px;
@@ -198,6 +195,10 @@
                                                         <span class="icon"><i class="fa ${class_heart}" aria-hidden="true"></i></span>
                                                         <span class="like-num">${num2str(count_heart)}</span>
                                                     </a>
+                                                    {% if user_info['username'] == 'admin' %}
+                                                        <button class="comment-btn" onclick="window.location.href='/admin-edit?travel_give=${travel['name']}'">수정</button>
+                                                        <button class="comment-btn" onclick="window.location.href=''">삭제</button>
+                                                    {% endif %}
                                                     <button class="comment-btn" onclick="window.location.href='/comment/${travel['name']}'">후기 쓰러가기</button>
                                                 </div>
                                             </div>
@@ -207,7 +208,12 @@
                 }
             })
         }
-
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            console.log('로그아웃')
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
     </script>
 </head>
 <body>
@@ -229,12 +235,10 @@
             <a class="navbar-item" href="/">
                 Home
             </a>
-
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Mypage
                 </a>
-
                 <div class="navbar-dropdown">
                     <a class="navbar-item" onclick="window.location.href='/mypage'">
                         Comment
@@ -242,14 +246,12 @@
                     <a class="navbar-item" onclick="window.location.href='/mylike'">
                         My favorite
                     </a>
-
                 </div>
             </div>
             {% if user_info.username == 'admin'%}
-
-            <a class="navbar-item" onclick="window.location.href='/admin'">
-                Admin
-            </a>
+                <a class="navbar-item" onclick="window.location.href='/admin'">
+                    Admin
+                </a>
             {% endif %}
         </div>
         <div class="navbar-end">
@@ -263,7 +265,6 @@
         </div>
     </div>
 </nav>
-
 <div class="section">
 
 </div>
