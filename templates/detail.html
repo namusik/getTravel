@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GetTravel | My Page </title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <style>
+        body {
+            background-color: RGBA(232, 52, 78, 0.2);
+            min-height: 100vh;
+        }
+
+        .section {
+            padding: 1rem 1.5rem;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .title {
+            font-weight: 800;
+            font-size: 5rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .is-sparta {
+            color: #536dfe !important;
+        }
+
+        .button .is-sparta {
+            background-color: #536dfe;
+            border-color: transparent;
+            color: #fff !important;
+        }
+
+        .name {
+            font-size: 50px;
+            font-weight: 800;
+        }
+        .description {
+            margin-top: 10px;
+        }
+
+        .icon {
+            margin-top: 20px;
+        }
+
+        .image {
+            width: 100%;
+        }
+
+    </style>
+    <script>
+        function likeTrip(name) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/like',
+                data: {name_give: name},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload()
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+
+<section class="hero is-white">
+    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
+        <h1 class="title is-sparta">GetTravel</h1>
+        <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <img src="../static/{{ travel.file }}"
+             alt="Placeholder image" class="image">
+        <p class="name">{{travel.name}}</p>
+        <p>{{travel.address}}</p>
+        <p class="description">{{ travel.content }}</p>
+        <button onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
+        <a href="#" onclick="likeTrip('${name}')" class="icon">
+            <span class="icon">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+        </a>
+    </div>
+</section>
+</body>
+</html>
