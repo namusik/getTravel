@@ -43,13 +43,6 @@
             window.location.href = "/login"
         }
 
-        function admin() {
-            window.location.href = "/admin"
-        }
-
-        function mypage() {
-            window.location.href = "/mypage"
-        }
     </script>
 
 </head>
@@ -72,17 +65,15 @@
             <a class="navbar-item" href="/">
                 Home
             </a>
-
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Mypage
                 </a>
-
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" onclick="javascript:();">
+                    <a class="navbar-item" onclick="window.location.href='/mypage'">
                         Comment
                     </a>
-                    <a class="navbar-item" onclick="javascript:();">
+                    <a class="navbar-item" onclick="window.location.href='/mylike'">
                         My favorite
                     </a>
 
@@ -90,7 +81,7 @@
             </div>
             {% if user_info.username == 'admin'%}
 
-            <a class="navbar-item" onclick="javascript:admin();">
+            <a class="navbar-item" onclick="window.location.href='/admin'">
                 Admin
             </a>
             {% endif %}

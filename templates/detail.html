@@ -7,19 +7,20 @@
 
     <!-- Bulma CSS 링크 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <!--css-->
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -32,7 +33,6 @@
 
         .section {
             padding: 1rem 1.5rem;
-
             margin: auto;
             background-color: #f4f4f4;
         }
@@ -58,9 +58,6 @@
             font-weight: 600;
         }
 
-        .card {
-            width : 300px;
-        }
 
         .description {
             margin-top: 10px;
@@ -83,7 +80,7 @@
         }
 
         .icon {
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         img {
@@ -91,17 +88,23 @@
             border-radius: 15px;
         }
 
+        .arrange {
+            display: block;
+            margin: auto;
+        }
+
 
 
         .left-div {
             width: 800px;
             height: 600px;
-            margin-right: 20px;
+            margin: auto;
         }
 
         .right-div {
             width: 400px;
             height: 700px;
+            margin: auto;
         }
 
         .last-div {
@@ -117,7 +120,7 @@
 
         function toggle_like(travel_name, type) {
             console.log(travel_name, type)
-            let $a_like = $(`#${travel_name} a[aria-label='heart']`)
+            let $a_like = $(`.last-div a[aria-label='heart']`)
             console.log($a_like)
             let $i_like = $a_like.find("i")
             console.log($i_like)
@@ -169,7 +172,6 @@
         }
 
         function get_travel(travelname) {
-            $("#post-box").empty()
             $.ajax({
                 type: "GET",
                 url: `/get_travel?travelname_give=${travelname}`,
@@ -181,25 +183,25 @@
                         let class_heart = travel['heart_by_me'] ? "fa-heart" : "fa-heart-o"
                         //하트 숫자
                         let count_heart = travel['count_heart']
-                        let html_temp = `<div class="container arrange">
-        <div class="left-div">
-            <img src="../static/{{ travel.file }}"
-                 alt="Placeholder image" class="image">
-        </div>
-        <div class="right-div">
-            <div>
-                <p class="name">{{ travel.name }}</p>
-                <p>{{ travel.address }}</p>
-                <p class="description">{{ travel.content }}</p>
-            </div>
-            <div class="last-div">
-                <a href="#" onclick="likeTrip('${name}')" class="icon"><span class="icon"><i class="fas fa-thumbs-up"></i></span>
-                </a>
-                <button class="comment-btn" onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
-            </div>
-
-        </div>
-    </div>`
+                        let html_temp = `<div class="container arrange" >
+                                            <div class="left-div">
+                                                <img src="../static/${travel['file']}" alt="Placeholder image" class="image">
+                                            </div>
+                                            <div class="right-div" >
+                                                <div>
+                                                    <p class="name">${travel['name']}</p>
+                                                    <p>${travel['address']}</p>
+                                                    <p class="description">${travel['content']}</p>
+                                                </div>
+                                                <div class="last-div" >
+                                                    <a class="icon" aria-label="heart" onclick="toggle_like('${travel['name']}', 'heart')">
+                                                        <span class="icon"><i class="fa ${class_heart}" aria-hidden="true"></i></span>
+                                                        <span class="like-num">${num2str(count_heart)}</span>
+                                                    </a>
+                                                    <button class="comment-btn" onclick="window.location.href='/comment/${travel['name']}'">후기 쓰러가기</button>
+                                                </div>
+                                            </div>
+                                        </div>`
                         $(".section").append(html_temp)
                     }
                 }
@@ -234,10 +236,10 @@
                 </a>
 
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" onclick="javascript:();">
+                    <a class="navbar-item" onclick="window.location.href='/mypage'">
                         Comment
                     </a>
-                    <a class="navbar-item" onclick="javascript:();">
+                    <a class="navbar-item" onclick="window.location.href='/mylike'">
                         My favorite
                     </a>
 
@@ -245,13 +247,11 @@
             </div>
             {% if user_info.username == 'admin'%}
 
-            <a class="navbar-item" onclick="javascript:admin();">
+            <a class="navbar-item" onclick="window.location.href='/admin'">
                 Admin
             </a>
             {% endif %}
         </div>
-
-
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
@@ -264,25 +264,8 @@
     </div>
 </nav>
 
+<div class="section">
 
-<div class="container arrange">
-    <div class="left-div">
-        <img src="../static/{{ travel.file }}"
-             alt="Placeholder image" class="image">
-    </div>
-    <div class="right-div">
-        <div>
-            <p class="name">{{ travel.name }}</p>
-            <p>{{ travel.address }}</p>
-            <p class="description">{{ travel.content }}</p>
-        </div>
-        <div class="last-div">
-            <a href="#" onclick="likeTrip('${name}')" class="icon"><i class="fas fa-thumbs-up"></i>
-            </a>
-            <button class="comment-btn" onclick="window.location.href='/comment/{{ travel.name }}'">후기 쓰러가기</button>
-        </div>
-
-    </div>
 </div>
 </body>
 </html>
