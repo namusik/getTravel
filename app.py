@@ -11,7 +11,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('13.125.82.238', 27017, username="test", password="test")
+client = MongoClient('13.125.199.102', 27017, username="test", password="test")
 db = client.gettravel
 
 @app.route('/')

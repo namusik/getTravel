@@ -14,6 +14,8 @@
 
 
     <!--css-->
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <!-- Optional JavaScript -->
@@ -31,7 +33,7 @@
     <title>스파르타코딩클럽 | 부트스트랩 연습하기</title>
     <style>
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
+            font-family: 'Jua', sans-serif;
             min-height: 100vh;
         }
 
@@ -61,6 +63,7 @@
             border-color: transparent;
             color: #fff !important;
         }
+
         .posing-box {
             width: 500px;
             margin-top: 20px;
@@ -70,9 +73,11 @@
             width: 800px;
             margin: auto;
         }
+
         .container {
             padding-left: 50px;
         }
+
         .custom-file {
             margin-bottom: 30px;
         }
@@ -80,9 +85,10 @@
 
     <script>
         $(document).ready(function () {
-                bsCustomFileInput.init();
+            bsCustomFileInput.init();
 
         })
+
         function posting() {
             let name = $('#name').val()
             let address = $('#address').val()
@@ -111,20 +117,78 @@
             });
         }
 
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+        function admin() {
+            window.location.href = "/admin"
+        }
+
+        function mypage() {
+            window.location.href = "/mypage"
+        }
+
     </script>
 </head>
 
 <body>
-<section class="hero-is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;background-color:white;">
-        <a class="title is-sparta" href="/">GetTravel</a>
-        <br>
-        <a class="subtitle is-sparta" href="/">여행정보를 손쉽게</a>
-        <button class="button" id="mypagebutton" >MY PAGE</button>
-        <button class="button" id="logoutbutton" >LOGOUT</button>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="../static/logo.png" width="112" height="28">
+        </a>
 
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
-</section>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Comment
+                    </a>
+                    <a class="navbar-item">
+                        My favorite
+                    </a>
+
+                </div>
+            </div>
+            {% if user_info.username == 'admin'%}
+
+            <a class="navbar-item" onclick="javascript:admin();">
+                Admin
+            </a>
+            {% endif %}
+        </div>
+
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" onclick="javascript:sign_out();">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="wrap">
     <div class="jumbotron jumbotron-fluid">
 
@@ -133,8 +197,8 @@
             <h1>여행지 업로드</h1>
             <div class="posing-box">
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="file">
-                  <label class="custom-file-label" for="file">Choose file</label>
+                    <input type="file" class="custom-file-input" id="file">
+                    <label class="custom-file-label" for="file">Choose file</label>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="name" placeholder="여행지 이름">
