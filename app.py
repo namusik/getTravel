@@ -278,6 +278,36 @@ def commenting():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/updatecomment', methods=['POST'])
+def update_comment():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        comment_receive = request.form["comment_give"]
+        date_receive = request.form["date_give"]
+        travelname_receive = request.form["travelname_give"]
+        new_doc = {
+            "comment": comment_receive,
+            "date": date_receive
+        }
+        db.comments.update_one({'username': user_info["username"], 'travelname': travelname_receive}, {'$set': new_doc})
+        return jsonify({"result": "success", 'msg': '포스팅 성공'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route('/deletecomment', methods=['POST'])
+def delete_comment():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        writer_receive = request.form["writer_give"]
+        travelname_receive = request.form["travelname_give"]
+        db.comments.delete_one({'username': writer_receive, 'travelname': travelname_receive})
+        return jsonify({"result": "success", 'msg': '삭제 성공'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route("/get_comments", methods=['GET'])
 def get_comments():
@@ -291,7 +321,7 @@ def get_comments():
             print('코멘트 불러오기')
             print(comment)
             comment["_id"] = str(comment["_id"])
-        return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments})
+        return jsonify({"result": "success", "msg": "코멘트를 가져왔습니다.", "comments": comments, "travelname": travelname})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 

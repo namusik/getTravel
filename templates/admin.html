@@ -123,13 +123,6 @@
             window.location.href = "/login"
         }
 
-        function admin() {
-            window.location.href = "/admin"
-        }
-
-        function mypage() {
-            window.location.href = "/mypage"
-        }
 
     </script>
 </head>
@@ -137,7 +130,7 @@
 <body>
 <nav class="navbar" role="navigation" style=" margin: 0; padding: 0;">
     <div class="navbar-brand">
-        <a class="navbar-item" href="">
+        <a class="navbar-item" href="/">
             <img class="logo-img" src="../static/logo.png" width="112" height="28">
         </a>
 
@@ -155,7 +148,7 @@
             </a>
 
             <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
+                <a class="navbar-link" >
                     Mypage
                 </a>
 
@@ -181,7 +174,7 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-light" onclick="javascript:sign_out();">
+                    <a class="button is-light" onclick="sign_out()">
                         Logout
                     </a>
                 </div>
