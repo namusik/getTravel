@@ -38,80 +38,80 @@
 
 </head>
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="">
-                <img class="logo-img" src="../static/logo.png" width="112" height="28">
-            </a>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img class="logo-img" src="../static/logo.png" width="112" height="28">
+        </a>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
             </a>
-        </div>
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/">
-                    Home
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Mypage
                 </a>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Mypage
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" onclick="window.location.href='/mypage'">
+                        My Comment
                     </a>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" onclick="window.location.href='/mypage'">
-                            My Comment
-                        </a>
-                        <a class="navbar-item" onclick="window.location.href='/mylike'">
-                            My favorite
-                        </a>
+                    <a class="navbar-item" onclick="window.location.href='/mylike'">
+                        My favorite
+                    </a>
 
-                    </div>
                 </div>
-                {% if user_info.username == 'admin'%}
+            </div>
+            {% if user_info.username == 'admin' %}
 
                 <a class="navbar-item" onclick="window.location.href='/admin'">
                     Admin
                 </a>
-                {% endif %}
-            </div>
+            {% endif %}
+        </div>
 
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-light" onclick="javascript:sign_out();">
-                            Logout
-                        </a>
-                    </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" onclick="javascript:sign_out();">
+                        Logout
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
-    <div class="pic-title">
-        <img class="back_img" src="../static/1.jpg">
-        <span class="main-title">GET TRAVEL</span>
     </div>
-    <div class="test">
-        <section class="index-section">
-            <div class="container index-container">
-                {% for travel in travels %}
+</nav>
+<div class="pic-title">
+    <img class="back_img" src="../static/1.jpg">
+    <span class="main-title">GET TRAVEL</span>
+</div>
+<div class="test">
+    <section class="index-section">
+        <div class="container index-container">
+            {% for travel in travels %}
                 <div class="card index-card" style="border-radius:25px;">
-                    <div class="card-image">
+                    <div class="card-image"">
                         <figure>
-                            <a href="/detail/{{ travel.name }}"><img src="../static/{{ travel.file }}"></a>
+                            <a href="/detail/{{ travel.name }}"><img src="../static/{{ travel.file }}" style="width:300px; height:300px; max-width: 400px; max-height: 400px;"></a>
                         </figure>
                     </div>
                     <div class="card-content">
                         <div class="content">
-                            <a class="card-title" href="/detail/{{ travel.name }}">{{travel.name}}</a>
+                            <a class="card-title" href="/detail/{{ travel.name }}">{{ travel.name }}</a>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
 </body>
 </html>
