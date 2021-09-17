@@ -2,9 +2,11 @@ body {
     font-family: 'Jua', sans-serif;
     min-height: 100vh;
 }
-
+.test{
+    display:flex;
+}
 .icon {
-    margin-top: 10px;
+
 }
 
 .logo-img {

@@ -31,6 +31,24 @@
             get_mycomments('{{ user_info.username }}')
         })
 
+        function time2str(date) {
+            let today = new Date()
+            let time = (today - date) / 1000 / 60  // 분
+
+            if (time < 60) {
+                return parseInt(time) + "분 전"
+            }
+            time = time / 60  // 시간
+            if (time < 24) {
+                return parseInt(time) + "시간 전"
+            }
+            time = time / 24
+            if (time < 7) {
+                return parseInt(time) + "일 전"
+            }
+            return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+        }
+
         function get_mycomments(username) {
 
 
@@ -48,6 +66,7 @@
                         for (let i = 0; i < comments.length; i++) {
                             let comment = comments[i]
                             let time_post = new Date(comment["date"])
+                            let time_before = time2str(time_post)
                             let html_temp = `<div class="box" id="${comment["_id"]}">
                                                 <article class="media">
                                                     <div class="media-left">
@@ -60,7 +79,7 @@
                                                     <div class="media-content">
                                                         <div class="content">
                                                             <p>
-                                                                <strong>${comment['profile_name']}</strong> <small>@${comment['username']}</small> <small>${time_post}</small>
+                                                                <strong>${comment['profile_name']}</strong> <small>@${comment['username']}</small> <small>${time_before}</small>
                                                                 <br>
                                                                 ${comment['comment']}
                                                             </p>
@@ -87,7 +106,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="">
-                <img src="../static/logo.png" width="112" height="28">
+                <img class="logo-img" src="../static/logo.png" width="112" height="28">
             </a>
 
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -110,7 +129,7 @@
 
                     <div class="navbar-dropdown">
                         <a class="navbar-item" onclick="window.location.href='/mypage'">
-                            Comment
+                            My Comment
                         </a>
                         <a class="navbar-item" onclick="window.location.href='/mylike'">
                             My favorite
