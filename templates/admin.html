@@ -27,15 +27,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 
     <style>
-        body {
-            font-family: 'Jua', sans-serif;
-            min-height: 100vh;
-        }
+
 
         .section {
             padding: 1rem 1.5rem;
@@ -135,7 +133,7 @@
 </head>
 
 <body>
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar" role="navigation" style=" margin: 0; padding: 0;">
     <div class="navbar-brand">
         <a class="navbar-item" href="">
             <img class="logo-img" src="../static/logo.png" width="112" height="28">
@@ -153,31 +151,25 @@
             <a class="navbar-item" href="/">
                 Home
             </a>
-
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Mypage
                 </a>
-
                 <div class="navbar-dropdown">
-                    <a class="navbar-item">
+                    <a class="navbar-item" onclick="window.location.href='/mypage'">
                         My Comment
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" onclick="window.location.href='/mylike'">
                         My favorite
                     </a>
-
                 </div>
             </div>
-            {% if user_info.username == 'admin'%}
-
-            <a class="navbar-item" onclick="javascript:admin();">
-                Admin
-            </a>
+            {% if user_info.username == 'admin' %}
+                <a class="navbar-item" onclick="window.location.href='/admin'">
+                    Admin
+                </a>
             {% endif %}
         </div>
-
-
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">

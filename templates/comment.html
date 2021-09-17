@@ -11,15 +11,19 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <!--css-->
 
-{#    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">#}
+    <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
+    <!-- Font Awesome CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
-            padding-top: 3.25rem;
         }
 
         .section {
@@ -203,12 +207,10 @@
             <a class="navbar-item" href="/">
                 Home
             </a>
-
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Mypage
                 </a>
-
                 <div class="navbar-dropdown">
                     <a class="navbar-item" onclick="window.location.href='/mypage'">
                         My Comment
@@ -218,14 +220,12 @@
                     </a>
                 </div>
             </div>
-            {% if user_info.username == 'admin'%}
-
-            <a class="navbar-item" onclick="window.location.href='/admin'">
-                Admin
-            </a>
+            {% if user_info.username == 'admin' %}
+                <a class="navbar-item" onclick="window.location.href='/admin'">
+                    Admin
+                </a>
             {% endif %}
         </div>
-
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
