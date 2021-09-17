@@ -96,6 +96,7 @@
             width: 800px;
             height: 600px;
             margin: auto;
+            overflow: hidden;
         }
 
         .right-div {
@@ -106,6 +107,14 @@
 
         .last-div {
             margin: auto;
+        }
+
+
+
+        .bigimg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
     </style>
@@ -180,34 +189,38 @@
                         let class_heart = travel['heart_by_me'] ? "fa-heart" : "fa-heart-o"
                         //하트 숫자
                         let count_heart = travel['count_heart']
-                        let html_temp = `<div class="container arrange" >
+                        let html_temp = `<div class="container arrange">
                                             <div class="left-div">
-                                                <img src="../static/${travel['file']}" alt="Placeholder image" class="image">
+                                                <img src="../static/${travel['file']}" alt="Placeholder image" class="image bigimg">
                                             </div>
-                                            <div class="right-div" >
+                                            <div class="right-div">
                                                 <div>
                                                     <p class="name">${travel['name']}</p>
                                                     <p>${travel['address']}</p>
                                                     <p class="description">${travel['content']}</p>
                                                 </div>
-                                                <div class="last-div" >
+                                                <div class="last-div">
                                                     <a class="icon" aria-label="heart" onclick="toggle_like('${travel['name']}', 'heart')">
                                                         <span class="icon"><i class="fa ${class_heart}" aria-hidden="true"></i></span>
                                                         <span class="like-num">${num2str(count_heart)}</span>
                                                     </a>
                                                     {% if user_info['username'] == 'admin' %}
-                                                        <button class="comment-btn" onclick="window.location.href='/admin-edit?travel_give=${travel['name']}'">수정</button>
+                                                        <button class="comment-btn"
+                                                                onclick="window.location.href='/admin-edit?travel_give=${travel['name']}'">수정
+                                                        </button>
                                                         <button class="comment-btn" onclick="window.location.href=''">삭제</button>
                                                     {% endif %}
                                                     <button class="comment-btn" onclick="window.location.href='/comment/${travel['name']}'">후기 쓰러가기</button>
                                                 </div>
                                             </div>
-                                        </div>`
+                                        </div>
+                                    </div>`
                         $(".section").append(html_temp)
                     }
                 }
             })
         }
+
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             console.log('로그아웃')
@@ -220,7 +233,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="">
-            <img src="../static/logo.png" width="112" height="28">
+            <img class="logo-img" src="../static/logo.png" width="112" height="28">
         </a>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -241,14 +254,14 @@
                 </a>
                 <div class="navbar-dropdown">
                     <a class="navbar-item" onclick="window.location.href='/mypage'">
-                        Comment
+                        My Comment
                     </a>
                     <a class="navbar-item" onclick="window.location.href='/mylike'">
                         My favorite
                     </a>
                 </div>
             </div>
-            {% if user_info.username == 'admin'%}
+            {% if user_info.username == 'admin' %}
                 <a class="navbar-item" onclick="window.location.href='/admin'">
                     Admin
                 </a>
@@ -267,6 +280,5 @@
 </nav>
 <div class="section">
 
-</div>
 </body>
 </html>

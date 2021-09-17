@@ -41,7 +41,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="">
-                <img src="../static/logo.png" width="112" height="28">
+                <img class="logo-img" src="../static/logo.png" width="112" height="28">
             </a>
 
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -100,8 +100,7 @@
                 <div class="card index-card">
                     <div class="card-image">
                         <figure>
-                            <img src="../static/{{ travel.file }}"
-                                 alt="Placeholder image">
+                            <a href="/detail/{{ travel.name }}"><img src="../static/{{ travel.file }}"></a>
                         </figure>
                     </div>
                     <div class="card-content">

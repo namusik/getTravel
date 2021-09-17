@@ -17,6 +17,7 @@
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+        <link href="{{ url_for('static', filename='cm_style.css') }}" rel="stylesheet">
         <style>
 
             .section {
@@ -34,20 +35,25 @@
                 font-family: 'Nanum Gothic', sans-serif;
             }
             .is-sparta {
-                color: #536dfe !important;
+                color: #872AE0 !important;
             }
             .button.is-sparta {
-                background-color: #536dfe;
+                background-color: #872AE0;
                 border-color: transparent;
                 color: #fff !important;
             }
             .button.is-sparta.is-outlined {
                 background-color: transparent;
-                border-color: #536dfe;
-                color: #536dfe !important;
+                border-color: #872AE0;
+                color: #872AE0 !important;
             }
             .help {
                 color: gray;
+            }
+            .login-pic {
+                display: block;
+                margin: auto;
+                margin-top: 100px;
             }
         </style>
         <script>
@@ -193,9 +199,8 @@
     </head>
     <body>
         <section class="hero is-white">
-            <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-                <h1 class="title is-sparta">GetTravel</h1>
-                <h3 class="subtitle is-sparta">여행정보를 손쉽게</h3>
+            <div class="pic-title login-pic">
+                <img class="logo_img" src="../static/logo.png">
             </div>
         </section>
         <section class="section">
