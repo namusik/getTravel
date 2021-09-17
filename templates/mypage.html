@@ -30,7 +30,47 @@
         $(document).ready(function () {
             get_mycomments('{{ user_info.username }}')
         })
+         //후기를 수정해주면 서버로 수정된 값을 보내주는 함수
+        function updatecomment() {
+            let travelname = $('#modal-post-update').attr('class').split(' ')[2]
+            console.log(travelname)
+            let comment = $("#textarea-post-update").val()
+            let today = new Date().toISOString()
+            console.log('여행지이름')
+            console.log(name)
 
+            $.ajax({
+                type: "POST",
+                url: "/updatecomment",
+                data: {
+                    comment_give: comment,
+                    date_give: today,
+                    travelname_give: travelname
+                },
+                success: function (response) {
+                    $("#modal-post-update").removeClass("is-active")
+                    window.location.reload()
+                }
+            })
+        }
+
+        //후기를 삭제하라고 서버에 보내는 함수
+        function deletecomment(writer, travelname) {
+            console.log('삭제시작')
+            console.log(writer)
+            console.log(travelname)
+            $.ajax({
+                type: "POST",
+                url: "/deletecomment",
+                data: {
+                    writer_give: writer,
+                    travelname_give: travelname
+                },
+                success: function (response) {
+                    window.location.reload()
+                }
+            })
+        }
         function time2str(date) {
             let today = new Date()
             let time = (today - date) / 1000 / 60  // 분
@@ -50,7 +90,6 @@
         }
 
         function get_mycomments(username) {
-
 
             $("#comment-box").empty()
             $.ajax({
@@ -79,10 +118,14 @@
                                                     <div class="media-content">
                                                         <div class="content">
                                                             <p>
-                                                                <strong>${comment['profile_name']}</strong> <small>@${comment['username']}</small> <small>${time_before}</small>
+                                                                <strong>${comment['travelname']}</strong> <small>@${comment['username']}</small> <small>${time_before}</small>
                                                                 <br>
                                                                 ${comment['comment']}
                                                             </p>
+                                                        </div>
+                                                        <div class="buttons">
+                                                           <button class="comment-btn" onclick="deletecomment('${comment['username']}', '${comment['travelname']}')" >삭제</button>
+                                                           <button class="comment-btn" onclick='$("#modal-post-update").addClass("is-active ${comment['travelname']}")'>수정</button>
                                                         </div>
                                                     </div>
                                                 </article>
@@ -105,7 +148,7 @@
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="/">
                 <img class="logo-img" src="../static/logo.png" width="112" height="28">
             </a>
 
@@ -166,5 +209,38 @@
 
         </div>
     </section>
+<div class="modal" id="modal-post-update">
+                <div class="modal-background" onclick='$("#modal-post-update").attr( "class", "modal")'></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="field">
+                                    <p class="control">
+                                        <textarea id="textarea-post-update" class="textarea"
+                                                  placeholder="여행지가 어떠셨나요?"></textarea>
+                                    </p>
+                                </div>
+                                <nav class="level is-mobile">
+                                    <div class="level-left">
+
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <a class="button is-sparta" onclick="updatecomment()">포스팅하기</a>
+                                        </div>
+                                        <div class="level-item">
+                                            <a class="button is-sparta is-outlined"
+                                               onclick='$("#modal-post-update").attr( "class", "modal")'>취소</a>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close"
+                        onclick='$("#modal-post-update").attr( "class", "modal")'></button>
+            </div>
 </body>
 </html>
