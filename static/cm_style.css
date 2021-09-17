@@ -2,10 +2,8 @@ body {
     font-family: 'Jua', sans-serif;
     min-height: 100vh;
 }
+
 .test{
-    display:flex;
-}
-.icon {
 
 }
 
@@ -85,6 +83,7 @@ body {
 
 .card-title {
     font-size: 14px;
+    text-align:center;
 }
 
 .card-index {
@@ -95,7 +94,17 @@ body {
     float: left;
     margin-right: 20px;
     margin-bottom: 40px;
-    width: 250px;
+    width: 300px;
+    display:grid;
+    grid-template-rows : 300px;
+    grid-template-columns:300px;
+    border-radius:25px;
+}
+.travel-card{
+    width:300px;
+    height:300px;
+    max-width: 400px;
+    max-height: 400px;
 }
 
 .content {
