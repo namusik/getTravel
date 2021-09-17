@@ -93,11 +93,11 @@
         <img class="back_img" src="../static/1.jpg">
         <span class="main-title">GET TRAVEL</span>
     </div>
-    <div>
+    <div class="test">
         <section class="index-section">
             <div class="container index-container">
                 {% for travel in travels %}
-                <div class="card index-card">
+                <div class="card index-card" style="border-radius:25px;">
                     <div class="card-image">
                         <figure>
                             <a href="/detail/{{ travel.name }}"><img src="../static/{{ travel.file }}"></a>
