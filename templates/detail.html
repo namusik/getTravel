@@ -205,10 +205,8 @@
                                                         <span class="like-num">${num2str(count_heart)}</span>
                                                     </a>
                                                     {% if user_info['username'] == 'admin' %}
-                                                        <button class="comment-btn"
-                                                                onclick="window.location.href='/admin-edit?travel_give=${travel['name']}'">수정
-                                                        </button>
-                                                        <button class="comment-btn" onclick="window.location.href=''">삭제</button>
+                                                        <button class="comment-btn" onclick="window.location.href='/admin-edit?travel_give=${travel['name']}'">수정</button>
+                                                        <button class="comment-btn" onclick="delete_travel('${travel['name']}')">삭제</button>
                                                     {% endif %}
                                                     <button class="comment-btn" onclick="window.location.href='/comment/${travel['name']}'">후기 쓰러가기</button>
                                                 </div>
@@ -220,7 +218,21 @@
                 }
             })
         }
+        function delete_travel(travel){
+            console.log('삭제 시작')
+            $.ajax({
+                    type: "POST",
+                    url: "/delete-travel",
+                    data: {
+                        travelname_give: travel
+                    },
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.href = "/"
+                    }
+                })
 
+        }
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             console.log('로그아웃')
