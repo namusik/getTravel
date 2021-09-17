@@ -191,7 +191,7 @@
                             let html_temp = `<div class="box" id="${comment["_id"]}">
                                                 <article class="media">
                                                     <div class="media-left">
-                                                        <a class="image is-64x64" href="/user/${comment['username']}">
+                                                        <a class="image is-64x64">
                                                             <img class="is-rounded" src="/static/${comment['profile_pic_real']}" alt="Image">
                                                         </a>
                                                     </div>
@@ -319,7 +319,7 @@
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
-                <a class="image is-32x32" href="/user/{{ user_info.username }}">
+                <a class="image is-32x32">
                     <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
                 </a>
             </figure>
