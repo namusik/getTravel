@@ -11,7 +11,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('52.78.239.241', 27017, username="test", password="test")
+client = MongoClient('13.125.82.238', 27017, username="test", password="test")
 db = client.gettravel
 
 @app.route('/')
@@ -39,6 +39,7 @@ def admin():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+#여행지 수정 페이지로 이동하기
 @app.route('/admin-edit')
 def admin_edit():
     token_receive = request.cookies.get('mytoken')
@@ -139,7 +140,7 @@ def upload():
 
     return jsonify({'msg': 'POST 요청 완료!'})
 
-
+#여행지 수정된 정보 받아서 DB에 update하기
 @app.route('/edit-travel', methods=['POST'])
 def edit_travel():
     token_receive = request.cookies.get('mytoken')
@@ -165,9 +166,29 @@ def edit_travel():
             file.save(save_to)  # 경로와 이름
             new_doc["file"] = f'{filename}.{extension}'
         db.travels.update_one({'name': oldname_receive}, {'$set': new_doc})
-        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
+        return jsonify({"result": "success", 'msg': '여행지를 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+#여행지 삭제하기
+@app.route('/delete-travel', methods=['POST'])
+def delete_travel():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        travel_receive = request.form['travelname_give']
+        #travels 테이블에서 해당 여행지 정보 지워주기
+        db.travels.delete_one({'name': travel_receive})
+        #comments 테이블에서 해당 여행지 후기들 지워주기
+        db.comments.delete_many({'travelname': travel_receive})
+        #likes 테이블에서 해당 여행지 찜 지워주기
+        db.likes.delete_many({'travelname': travel_receive})
+        user_info = db.users.find_one({"username": payload["id"]})
+        return jsonify({"result": "success", 'msg': '여행지를 삭제했습니다.'})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/login')
 def login():
@@ -213,15 +234,12 @@ def sign_up():
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
-
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     # 중복검사
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
-
-
 
 @app.route('/comment/<keyword>')
 def comment(keyword):
@@ -324,5 +342,6 @@ def mylikes():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
