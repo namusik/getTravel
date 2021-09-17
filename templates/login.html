@@ -172,10 +172,16 @@
                     $("#input-username").focus()
                     return;
                 }
-                if (!is_nickname(username)) {
-                    $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                if (username  == "admin") {
+                    $("#help-id").text("사용 불가능한 아이디입니다.").removeClass("is-safe").addClass("is-danger")
                     $("#input-username").focus()
                     return;
+                }else{
+                    if (!is_nickname(username)) {
+                        $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                        $("#input-username").focus()
+                        return;
+                    }
                 }
                 $("#help-id").addClass("is-loading")
                 $.ajax({
