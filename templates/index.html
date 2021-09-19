@@ -29,6 +29,7 @@
 
     <script>
         function sign_out() {
+            console.log('test');
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
             window.location.href = "/login"
